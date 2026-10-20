@@ -1,6 +1,7 @@
-function notImplemented() {
-  throw new Error('Корзина ещё не реализована. Сначала прочитайте тесты.');
-}
+const FREE_DELIVERY_FROM = 50000;
+const DELIVERY_PRICE = 30000;
+const SAVE10_MIN_SUBTOTAL = 20000;
+const PROMOCODE = "SAVE10";
 
 function addToCart(cart, product, count) {
   if (count <= 0) {
@@ -55,8 +56,22 @@ function removeFromCart(cart, productId) {
   return cart.filter((item) => item.id !== productId);
 }
 
-function calculateCartSubtotal() { return notImplemented(); }
-function calculateOrderTotal() { return notImplemented(); }
+function calculateCartSubtotal(cart) {
+  return cart.reduce((total, product) => total + product.price * product.quantity, 0);
+}
+
+function calculateOrderTotal(cart, promo) {
+  const cartSum = calculateCartSubtotal(cart);
+  const deliverySum = (cartSum >= FREE_DELIVERY_FROM) ? 0 : DELIVERY_PRICE;
+  const discountSum = (promo === PROMOCODE && cartSum >= SAVE10_MIN_SUBTOTAL) ? Math.floor(cartSum / 10) : 0;
+
+  return {
+    subtotal: cartSum,
+    discount: discountSum,
+    delivery: deliverySum,
+    total: cartSum + deliverySum - discountSum,
+  };
+}
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
 
