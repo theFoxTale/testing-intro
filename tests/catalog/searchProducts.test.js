@@ -1,5 +1,5 @@
 const products = require('../../src/data/products');
-const { searchProducts, getAvailableProducts} = require('../../src/catalog');
+const { searchProducts } = require('../../src/catalog');
 
 describe('searchProducts', () => {
   test("'Наушники' возвращает товар с ID 1", () => {
