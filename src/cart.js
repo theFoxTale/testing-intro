@@ -47,7 +47,14 @@ function changeQuantity(cart, productId, count) {
   return newCart;
 }
 
-function removeFromCart() { return notImplemented(); }
+function removeFromCart(cart, productId) {
+  if (productId < 0) {
+    throw new RangeError("Некорректный идентификатор товара");
+  }
+
+  return cart.filter((item) => item.id !== productId);
+}
+
 function calculateCartSubtotal() { return notImplemented(); }
 function calculateOrderTotal() { return notImplemented(); }
 
